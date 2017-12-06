@@ -1,6 +1,10 @@
 History
 -------
 
+0.6
+---
+* Only invalidate cached models
+
 0.5
 ---
 * Add support for Django 1.10

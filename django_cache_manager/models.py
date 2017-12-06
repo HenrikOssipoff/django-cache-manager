@@ -38,7 +38,14 @@ def invalidate_model_cache(sender, instance, **kwargs):
     instance
         The actual instance being saved.
     """
+
     logger.debug('Received post_save/post_delete signal from sender {0}'.format(sender))
+
+    # Only invalidate cache on cached models
+    from .cache_manager import CacheManager
+    if not isinstance(sender.objects, CacheManager):
+        return
+
     if django.VERSION >= (1, 8):
         related_tables = set(
             [f.related_model._meta.db_table for f in sender._meta.get_fields()

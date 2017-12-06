@@ -11,7 +11,8 @@ from tests.models import(
     Engine,
     Person,
     Group,
-    Membership
+    Membership,
+    UncachedModel
 )
 
 
@@ -81,3 +82,9 @@ class MembershipFactory(factory.django.DjangoModelFactory):
     date_joined = fuzzy.FuzzyDate(datetime.date(2013, 1, 1))
     invite_reason = fuzzy.FuzzyText()
 
+
+class UncachedModelFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = UncachedModel
+
+    value = fuzzy.FuzzyText()
