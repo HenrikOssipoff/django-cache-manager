@@ -60,3 +60,6 @@ class Membership(models.Model):
 
     objects = CacheManager()
 
+
+class UncachedModel(models.Model):
+    value = models.CharField(max_length=128)

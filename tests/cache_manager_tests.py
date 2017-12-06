@@ -11,9 +11,21 @@ from django_cache_manager.cache_manager import (
     CachingQuerySet
 )
 from django_cache_manager.mixins import CacheKeyMixin
-from .models import Manufacturer
-from tests.factories import ManufacturerFactory
+from .models import Manufacturer, UncachedModel
+from tests.factories import CarFactory, ManufacturerFactory, UncachedModelFactory
 
+
+@patch('django_cache_manager.models.update_model_cache')
+class UncachedModelTests(TestCase):
+    def test_uncached_model_not_updated(self, update_model_cache):
+        self.assertEqual(update_model_cache.call_count, 0)
+        UncachedModelFactory.create()
+        self.assertEqual(update_model_cache.call_count, 0)
+
+    def test_cached_model_updated(self, update_model_cache):
+        self.assertEqual(update_model_cache.call_count, 0)
+        CarFactory.create()
+        self.assertGreater(update_model_cache.call_count, 0)
 
 
 class CacheManagerTests(TestCase):
